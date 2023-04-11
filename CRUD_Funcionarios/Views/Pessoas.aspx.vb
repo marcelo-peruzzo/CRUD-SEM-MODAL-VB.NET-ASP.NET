@@ -16,21 +16,20 @@ Partial Class Views_Pessoas
 
     Public Sub CarregaGrid()
         Dim query As String = "SELECT * FROM CadastroPessoa"
-        Dim dt As New DataTable()
+        Dim dt As New DataTable
 
         Using connection As New SqlConnection(connectionString)
             Dim command As New SqlCommand(query, connection)
             Dim adapter As New SqlDataAdapter(command)
 
             connection.Open()
-            adapter.Fill(dt) 'o método Fill preenche o DataTable dt com os resultados da consulta
-            'executada pelo SqlDataAdapter.
+            adapter.Fill(dt)
 
             grd.DataSource = dt
             grd.DataBind()
         End Using
-    End Sub
 
+    End Sub
 
     Public Sub CriarPessoa()
 
@@ -54,4 +53,25 @@ Partial Class Views_Pessoas
     Private Sub btnAdicionar_Click(sender As Object, e As EventArgs) Handles btnAdicionar.Click
         CriarPessoa()
     End Sub
+
+    Public Sub Update()
+
+    End Sub
+
+    Protected Sub btnDeletar_Click(sender As Object, e As EventArgs)
+        Dim id As Integer = Integer.Parse(CType(sender, Button).CommandArgument)
+        Delete(id)
+        CarregaGrid()
+    End Sub
+
+    Public Sub Delete(ByVal id As Integer)
+        Dim query As String = "DELETE FROM CadastroPessoa WHERE ID = @id"
+        Using connection As New SqlConnection(connectionString)
+            Dim command As New SqlCommand(query, connection)
+            command.Parameters.AddWithValue("@id", id)
+            connection.Open()
+            command.ExecuteNonQuery()
+        End Using
+    End Sub
+
 End Class
