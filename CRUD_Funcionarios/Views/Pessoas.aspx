@@ -9,8 +9,8 @@
             <asp:BoundField DataField="Telefone" HeaderText="Telefone" />
             <asp:TemplateField HeaderText="Opções">
                 <ItemTemplate>
-                    <asp:Button ID="btnEditar" runat="server" Text="Editar" CssClass="btn btn-warning float-right" />
-                    <asp:Button ID="btnDeletar" runat="server" Text="Deletar" CssClass="btn btn-danger float-right" OnClick="btnDeletar_Click" CommandArgument='<%# Eval("ID") %>' />
+                    <asp:Button ID="btnEditar" runat="server" Text="Editar" CssClass="btn btn-warning float-right" OnClick="btn_Editar" CommandArgument='<%# Eval("id") %>' />
+                    <asp:Button ID="btnDeletar" runat="server" Text="Deletar" CssClass="btn btn-danger float-right" OnClick="btnDeletar_Click" CommandArgument='<%# Eval("id") %>' />
 
                 </ItemTemplate>
             </asp:TemplateField>
@@ -35,6 +35,8 @@
         </div>
 
         <asp:Button ID="btnAdicionar" runat="server" Text="Adicionar" CssClass="btn btn-primary" />
+        <asp:Button ID="btnAtualizar" runat="server" Text="Atualizar" CssClass="btn btn-success" />
+        <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-danger" />
     </div>
 
 </asp:Content>

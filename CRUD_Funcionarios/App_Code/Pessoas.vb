@@ -3,7 +3,7 @@ Imports Microsoft.VisualBasic
 
 Public Class Pessoas
 
-    Private idValue As Integer
+    Public idValue As Integer
     Public Property Id() As Integer
         Get
             Return idValue
