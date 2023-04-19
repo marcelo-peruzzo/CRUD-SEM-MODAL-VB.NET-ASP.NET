@@ -1,6 +1,21 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/MasterPage.master" AutoEventWireup="false" CodeFile="Pessoas.aspx.vb" Inherits="Views_Pessoas" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var success = params.get('success');
+        if (success === 'true') {
+            showSuccessAlert();
+            window.history.replaceState(null, null, window.location.pathname); // remove o parâmetro de sucesso da URL
+        }
+        function showSuccessAlert() {
+            Swal.fire(
+                'Sucesso!',
+                'Pessoa cadastrada com sucesso!',
+                'success'
+            )
+        }
+    </script>
     <asp:GridView ID="grd" AutoGenerateColumns="false" runat="server" CssClass="table table-striped" DataKeyNames="ID">
         <Columns>
             <asp:BoundField DataField="Nome" HeaderText="Nome" />
@@ -24,6 +39,7 @@
         <div>
             <asp:Label runat="server" Text="Data Nascimento" AssociatedControlID="txtData" CssClass="d-flex mb-1 mt-3"></asp:Label>
             <asp:TextBox ID="txtData" CssClass="d-flex mb-2 mt-1 form-control" runat="server" MaxLength="150"></asp:TextBox>
+            <asp:Calendar ID="Calendar1" runat="server" SelectionMode="Day" CssClass="d-flex mb-2 mt-1 form-control"></asp:Calendar>
         </div>
         <div>
             <asp:Label runat="server" Text="Email" AssociatedControlID="txtEmail" CssClass="d-flex mb-1 mt-3"></asp:Label>

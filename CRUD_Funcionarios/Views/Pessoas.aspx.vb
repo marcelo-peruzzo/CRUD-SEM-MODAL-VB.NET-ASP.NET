@@ -12,6 +12,10 @@ Partial Class Views_Pessoas
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
             CarregaGrid()
+            If Session("showAlertAdd") IsNot Nothing AndAlso Session("showAlertAdd").ToString() = "True" Then
+                ScriptManager.RegisterStartupScript(Me, Me.GetType(), "SweetAlert", "showSuccessAlert();", True)
+                Session.Remove("showAlertAdd")
+            End If
         End If
     End Sub
 
@@ -52,8 +56,19 @@ Partial Class Views_Pessoas
             command.Parameters.AddWithValue("@Data", pessoas.Data)
             command.Parameters.AddWithValue("@Email", pessoas.Email)
             command.Parameters.AddWithValue("@Telefone", pessoas.Telefone)
-            connection.Open()
-            command.ExecuteNonQuery()
+            Try
+                connection.Open()
+                Dim lineAfected = command.ExecuteNonQuery
+                If lineAfected > 0 Then
+                    Session("showAlertAdd") = True
+                    Response.Redirect(Request.Url.AbsolutePath & "?success=true")
+                    Exit Sub
+                End If
+
+            Catch ex As Exception
+                Console.WriteLine(ex.Message)
+            End Try
+
         End Using
     End Sub
 
@@ -61,7 +76,6 @@ Partial Class Views_Pessoas
     'para gerar uma nova pessoa, e chama o metodo CarregaGrid() para listar o novos dados na GridView
     Private Sub BtnAdicionar_Click(sender As Object, e As EventArgs) Handles btnAdicionar.Click
         CreatePeople()
-        CarregaGrid()
     End Sub
 
     'Carrega os dados do banco para os campos text, quando é clicado no botão "Editar"
@@ -136,6 +150,7 @@ Partial Class Views_Pessoas
     Private Sub btnAtualizar_Click(sender As Object, e As EventArgs) Handles btnAtualizar.Click
         UpdatePeople(pessoas.Id)
         Session.Remove("IdEditar")
+        btnAdicionar.Visible = True
         CarregaGrid()
     End Sub
 End Class
